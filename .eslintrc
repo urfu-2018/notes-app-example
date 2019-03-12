@@ -1,0 +1,11 @@
+{
+    "extends": "xo",
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+        "@typescript-eslint/no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
+        "indent": [2, 4, {"SwitchCase": 1}],
+        "no-undef": 0,
+        "no-unused-vars": 0
+    }
+}

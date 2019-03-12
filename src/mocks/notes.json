@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Books",
+    "text": "Books to read"
+  },
+  {
+    "name": "Films",
+    "text": "Films to watch"
+  },
+  {
+    "name": "Music",
+    "text": "Music to watch"
+  }
+]

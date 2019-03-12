@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "rootDir": "src/",
+    "outDir": "dist/",
+
+    "baseUrl": "src/",
+
+    "target": "es2018",
+    "lib": ["es2018"],
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+
+    "esModuleInterop": true,
+
+    "strict": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "exclude": [
+    "config/"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "urfu-2018-example-app",
+  "private": true,
+  "engines": {
+    "node": "10"
+  },
+  "scripts": {
+    "clean": "rimraf dist node_modules",
+    "build": "npm-run-all --parallel build:*",
+    "build:ts": "tsc",
+    "build:hbs": "copyfiles --up 1 './src/views/**/*' './src/public/*' dist/",
+    "ci:heroku:build": "docker build --rm=false -t registry.heroku.com/$npm_package_name/web .",
+    "ci:heroku:login": "docker login -u $HEROKU_LOGIN -p $HEROKU_TOKEN registry.heroku.com",
+    "ci:heroku:push": "docker push registry.heroku.com/$npm_package_name/web:latest",
+    "ci:heroku:release": "./scripts/release.sh $npm_package_name",
+    "ci:surge": "surge -p ./dist/public -d $npm_package_name.surge.sh",
+    "deps:all": "npm ci",
+    "deps:production": "npm ci --production",
+    "docker:build": "docker build -t $npm_package_name .",
+    "docker:run": "docker run -p 8080:80 $npm_package_name",
+    "heroku:login": "heroku container:login",
+    "heroku:push": "heroku container:push web",
+    "heroku:release": "heroku container:release web",
+    "heroku:open": "heroku open",
+    "heroku": "npm-run-all heroku:*",
+    "heroku-init": "heroku login && heroku create $npm_package_name",
+    "lint": "npm-run-all lint:*",
+    "lint:css": "stylelint --fix src/**/*.css",
+    "lint:deps": "npm audit",
+    "lint:es": "eslint --fix --ext=.ts src/",
+    "lint:ts": "tslint --project .",
+    "start": "NODE_PATH=dist/ node dist/",
+    "surge": "surge -p ./dist/public -d $npm_package_name.surge.sh"
+  },
+  "dependencies": {
+    "@types/node": "11.11.6",
+    "body-parser": "1.18.3",
+    "config": "3.0.1",
+    "express": "4.16.4",
+    "hbs": "4.0.3",
+    "morgan": "1.9.1",
+    "ts-node": "8.0.3",
+    "typescript": "3.3.4000"
+  },
+  "devDependencies": {
+    "@types/config": "0.0.34",
+    "@types/express": "4.16.1",
+    "@types/hbs": "4.0.1",
+    "@types/morgan": "1.7.35",
+    "@typescript-eslint/eslint-plugin": "1.5.0",
+    "@typescript-eslint/parser": "1.5.0",
+    "copyfiles": "2.1.0",
+    "eslint": "5.15.3",
+    "eslint-config-xo": "0.26.0",
+    "npm-run-all": "4.1.5",
+    "rimraf": "2.6.3",
+    "stylelint": "9.10.1",
+    "stylelint-config-standard": "18.2.0",
+    "surge": "0.20.3",
+    "tslint": "5.14.0"
+  }
+}
