@@ -1,4 +1,6 @@
-export default {
+'use strict';
+
+module.exports = {
     // Включаем отладочный режим приложения
     debug: true,
 

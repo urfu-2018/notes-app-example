@@ -1,6 +1,8 @@
+'use strict';
+
 const packageJson = require('../package.json');
 
-export default {
+module.exports = {
     // Выключаем отладочный режим приложения
     debug: false,
 

@@ -17,8 +17,5 @@
 
     "noUnusedLocals": true,
     "noUnusedParameters": true
-  },
-  "exclude": [
-    "config/"
-  ]
+  }
 }
