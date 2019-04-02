@@ -8,7 +8,7 @@
     "clean": "rimraf dist node_modules",
     "build": "npm-run-all --parallel build:*",
     "build:ts": "tsc",
-    "build:hbs": "copyfiles --up 1 './src/views/**/*' './src/public/*' dist/",
+    "build:hbs": "copyfiles --up 1 \"./src/views/**/*\" \"./src/public/*\" dist/",
     "ci:heroku:build": "docker build --rm=false -t registry.heroku.com/$npm_package_name/web .",
     "ci:heroku:login": "docker login -u $HEROKU_LOGIN -p $HEROKU_TOKEN registry.heroku.com",
     "ci:heroku:push": "docker push registry.heroku.com/$npm_package_name/web:latest",
@@ -29,7 +29,7 @@
     "lint:deps": "npm audit",
     "lint:es": "eslint --fix --ext=.ts,.js src/ config/",
     "lint:ts": "tslint --project .",
-    "start": "NODE_PATH=dist/ node dist/",
+    "start": "cross-env NODE_PATH=dist/ node dist/",
     "surge": "surge -p ./dist/public -d $npm_package_name.surge.sh"
   },
   "dependencies": {
@@ -50,6 +50,7 @@
     "@typescript-eslint/eslint-plugin": "1.5.0",
     "@typescript-eslint/parser": "1.5.0",
     "copyfiles": "2.1.0",
+    "cross-env": "5.2.0",
     "eslint": "5.15.3",
     "eslint-config-xo": "0.26.0",
     "npm-run-all": "4.1.5",
