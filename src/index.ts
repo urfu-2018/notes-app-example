@@ -68,7 +68,7 @@ app.use(commonData);
 routes(app);
 
 // Фиксируем фатальную ошибку и отправляем ответ с кодом 500
-app.use((err: Error, _req: Request, res: Response) => {
+app.use((err: Error, _req: Request, res: Response, _next: Next) => {
     console.error(err.stack);
 
     res.sendStatus(500);
