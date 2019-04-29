@@ -4,6 +4,7 @@ FROM node:10
 # Копируем файлы необходимые для работы приложения
 COPY config /config
 COPY dist /dist
+COPY next.config.js /
 COPY package.json /
 COPY package-lock.json /
 

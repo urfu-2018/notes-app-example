@@ -6,11 +6,14 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import config from 'config';
 import express, {NextFunction as Next, Request, Response} from 'express';
-import hbs from 'hbs';
 import morgan from 'morgan';
+import nextjs from 'next';
+
+// Подключаем isomorphic-fetch, чтобы иметь возможность использовать fetch и на сервере
+import 'isomorphic-fetch';
 
 // В третьей – собственные модули
-import commonData from 'middlewares/common-data';
+import render from 'middlewares/render';
 import notes from 'mocks/notes.json';
 import Note from 'models/note';
 import routes from 'routes';
@@ -20,25 +23,13 @@ for (const note of notes) {
     new Note(note).save();
 }
 
-// Создаём экземпляр приложения
+// Создаём экземпляр Express.js приложения
 const app = express();
-
-// Определяем директорию для хранения шаблонов
-// Для работы с директориями всегда используем модуль «path»
-// и преобразуем относительные пути в абсолютные
-const viewsDir = path.join(__dirname, 'views');
-
-// Определяем директорию для хранения отдельных частей шаблонов
-const partialsDir = path.join(viewsDir, 'partials');
+// Создаём экземпляр Next.js приложения
+const nextApp = nextjs({dev: process.env.NODE_ENV !== 'production'});
 
 // Определяем директорию для статичных файлов (изображений, стилей и скриптов)
 const publicDir = path.join(__dirname, 'public');
-
-// Подключаем шаблонизатор
-app.set('view engine', 'hbs');
-
-// Подключаем директорию с шаблонами
-app.set('views', viewsDir);
 
 // Логируем запросы к приложению в debug-режиме
 if (config.get('debug')) {
@@ -49,10 +40,8 @@ if (config.get('debug')) {
 app.use(express.static(publicDir));
 
 // Разбираем тело POST запроса, чтобы сохранить заметку
-// Запрос приходит в urlencoded формате (обычный для HTML форм)
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+// Запрос приходит в json формате (обычный для AJAX-запросов)
+app.use(bodyParser.json());
 
 // Выводим ошибку, если не смогли разобрать POST запрос, и продолжаем работу
 app.use((err: Error, _req: Request, _res: Response, next: Next) => {
@@ -61,8 +50,8 @@ app.use((err: Error, _req: Request, _res: Response, next: Next) => {
     next();
 });
 
-// Собираем общие данные для всех страниц приложения
-app.use(commonData);
+// Добавляем хелперы для отрисовки страниц
+app.use(render(nextApp));
 
 // Подключаем маршруты
 routes(app);
@@ -74,10 +63,8 @@ app.use((err: Error, _req: Request, res: Response, _next: Next) => {
     res.sendStatus(500);
 });
 
-// Подключаем директорию с отдельными частями шаблонов
-// Этот метод асинхронный и мы запускаем сервер только после того,
-// как все частичные шаблоны будут прочитаны
-hbs.registerPartials(partialsDir, () => {
+// Дожидаемся старта Next.js приложения, и только после этого запускаем Express.js сервер
+nextApp.prepare().then(() => {
     const port = config.get('port');
 
     app.listen(port, () => {

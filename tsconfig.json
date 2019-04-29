@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "rootDir": "src/",
+    "rootDir": ".",
     "outDir": "dist/",
 
-    "baseUrl": "src/",
+    "baseUrl": "./server/",
 
     "target": "es2018",
-    "lib": ["es2018"],
+    "lib": ["dom", "es2018"],
     "module": "commonjs",
     "resolveJsonModule": true,
     "sourceMap": true,
@@ -16,6 +16,12 @@
     "strict": true,
 
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+
+    "jsx": "react",
+
+    "typeRoots": [
+      "./@types"
+    ]
   }
 }
